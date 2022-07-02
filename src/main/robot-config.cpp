@@ -1,6 +1,5 @@
 #include "vex.h"
 
-using namespace vex;
 using signature = vision::signature;
 using code = vision::code;
 
@@ -8,11 +7,13 @@ using code = vision::code;
 brain  Cortex;
 
 // VEXcode device constructors
-motor LFMtr = motor ( PORT1, ratio18_1, false );
-motor LBMtr = motor ( PORT2, ratio18_1, false );
-motor RFMtr = motor ( PORT3, ratio18_1, true );
-motor RBMtr = motor ( PORT4, ratio18_1, true );
-controller Controller1 = controller ( primary );
+motor LF = motor ( PORT11, ratio18_1, false );
+motor LB = motor ( PORT12, ratio18_1, false );
+motor RF = motor ( PORT20, ratio18_1, true );
+motor RB = motor ( PORT19, ratio18_1, true );
+motor Fly = motor ( PORT5, ratio6_1, false);
+controller Remix = controller ( primary );
+controller Wild = controller ( partner );
 
 // VEXcode generated functions
 // define variable for remote controller enable/disable
@@ -20,10 +21,10 @@ bool RemoteControlCodeEnabled = true;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
- * 
+ *
  * This should be called at the start of your int main function.
  */
-void vexcodeInit( void ) 
+void vexcodeInit( void )
 {
   // nothing to initialize
 }

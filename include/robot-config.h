@@ -1,16 +1,15 @@
 using namespace vex;
 
-// A global instance of competition
-competition Comp;
-
 extern brain Cortex;
 
 // VEXcode devices
-extern motor LFMtr;
-extern motor LBMtr;
-extern motor RFMtr;
-extern motor RBMtr;
-extern controller Controller1;
+extern motor LF;
+extern motor LB;
+extern motor RF;
+extern motor RB;
+extern motor Fly;
+extern controller Remix;
+extern controller Wild;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
