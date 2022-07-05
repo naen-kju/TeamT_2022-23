@@ -1,3 +1,6 @@
+#ifndef vex_h
+#define vex_h
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,3 +18,5 @@
 
 #define repeat ( iterations )                                                     \
   for ( int iterator = 0; iterator < iterations; iterator++ )
+
+#endif
