@@ -1,31 +1,30 @@
-#include "vex.h"
-
-void preAutoCode ();
-void autonCode ();
-void userCode ();
+#ifndef functions_h
+#define functions_h
 
 #include "vex.h"
 
-int 
-LThres,
-RThres,
-MaxThres = 75,
-MinThres = 0;
+void Thresholds ( float Variable, int Max, int Min );
 
-float 
-liftGR    = 7,
-mogoGR    = 5,
-driveGR   = 5/3,
-wheelDia  = 4,
-wheelCirc = wheelDia * M_PI,
+void RemixEnable ();
 
-Clamp ( float value, float min, float max );
+bool RemixControlEnabled ();
 
-void 
-SpinDrive ( int lVel, int rVel ),
-StopAll ( bool LMs, bool RMs ),
+void WildEnable ();
 
-TimeDrv( int Lvel, int Rvel, float milsec ),
+bool WildControlEnabled ();
 
-DegDrv ( int vel, float dist, bool next ),
-DegTurn ();
+float Clamp ( float value, float min, float max );
+
+void SpinDrive(int lVel, int rVel);
+
+void StopAll(bool LMs, bool RMs);
+
+void SpinForDrive(float lDeg, float rDeg, int lVel, int rVel, bool next);
+
+void TimeDrv(int Lvel, int Rvel, float milsec);
+
+void DegDrv(int vel, float dist, bool next);
+
+void DegTurn();
+
+#endif
