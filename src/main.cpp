@@ -19,19 +19,21 @@ void user ( void )
   MinThres = 0;
 
   int 
-  Y1Thres = Remix.Axis3.position ( pct ),
-  X1Thres = Remix.Axis4.position ( pct ),
-  R1Thres = Remix.Axis2.position ( pct );
-
-  int 
-  Y2Thres = Wild.Axis3.position ( pct ),
-  X2Thres = Wild.Axis4.position ( pct ),
-  R2Thres = Wild.Axis2.position ( pct );
+  Y1Thres, X1Thres, R1Thres,
+  Y2Thres, X2Thres, R2Thres;
 
   while (true) 
   {
     Remix.ButtonA.pressed(RemixEnable);
     Wild.ButtonA.pressed(WildEnable);
+
+    Y1Thres = Remix.Axis3.position ( pct ),
+    X1Thres = Remix.Axis4.position ( pct ),
+    R1Thres = Remix.Axis2.position ( pct );
+ 
+    Y2Thres = Wild.Axis3.position ( pct ),
+    X2Thres = Wild.Axis4.position ( pct ),
+    R2Thres = Wild.Axis2.position ( pct );
 
     if (RemixControlEnabled() == true)
     {
