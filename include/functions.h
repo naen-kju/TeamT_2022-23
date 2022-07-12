@@ -1,6 +1,3 @@
-#ifndef functions_h
-#define functions_h
-
 #include "vex.h"
 
 void Thresholds ( float Variable, int Max, int Min );
@@ -12,6 +9,8 @@ bool RemixControlEnabled ();
 void WildEnable ();
 
 bool WildControlEnabled ();
+
+void MecanumSpin ( float X, float Y, float R );
 
 float Clamp ( float value, float min, float max );
 
@@ -26,5 +25,3 @@ void TimeDrv(int Lvel, int Rvel, float milsec);
 void DegDrv(int vel, float dist, bool next);
 
 void DegTurn();
-
-#endif

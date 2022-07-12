@@ -1,22 +1,27 @@
 #include "functions.h"
 #include "vision.h"
 
-// Global Variables
-  const float driveGR   = 5/3,
-              wheelDia  = 4,
-              wheelCirc = wheelDia * M_PI;
+// Global Variables for functions
+  const float 
+    // Sets the gear ratio for the drivetrain
+    driveGR { 5/3 },
+    // Sets the wheels' diameter (4 inches)
+    wheelDia { 4 },
+    // Sets the wheels' circumfrence based on diameter
+    wheelCirc = wheelDia * M_PI; 
+  
+  float SpinnyReading ()
+  {
+    return Vigour.orientation(yaw, deg);
+  }
 
-// Functions for userControl
+// Functions for void User
   void Thresholds ( float Variable, int Max, int Min )
   {
     if (Variable > Max)
       { Variable = 100; }
     else if (Variable < -Max)
       { Variable = -100; }
-    if (Variable < Min)
-      { Variable = 0; }
-    else if (Variable > -Min)
-      { Variable = -0; }
   }
 
   bool RemixControl = true;
@@ -40,7 +45,15 @@
 
   bool WildControlEnabled ()
   {
-    return RemixControl;
+    return WildControl;
+  }
+
+  void MecanumSpin ( float Y, float X, float R )
+  {
+    LF.spin ( fwd, Y + X + R, pct );
+    LB.spin ( fwd, Y - X + R, pct );
+    RF.spin ( fwd, Y - X - R, pct );
+    RB.spin ( fwd, Y + X - R, pct );
   }
 
 // Functions for auton.
@@ -91,7 +104,7 @@
   {
     SpinDrive(Lvel, Rvel);
 
-    wait(milsec, msec);
+    wait(milsec, sec);
 
     StopAll(true, true);
   }
@@ -102,4 +115,7 @@
     SpinForDrive(rot, rot, vel, vel, next);
   }
 
-  void DegTurn();
+  void DegTurn( int vel, float rotation)
+  {
+
+  }
