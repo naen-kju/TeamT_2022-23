@@ -8,46 +8,13 @@
     // Sets the wheels' diameter (4 inches)
     wheelDia { 4 },
     // Sets the wheels' circumfrence based on diameter
-    wheelCirc = wheelDia * M_PI; 
-  
-  float SpinnyReading ()
-  {
-    return Vigour.orientation(yaw, deg);
-  }
+    wheelCirc = wheelDia * M_PI,
+    // Finds the radians from degrees
+    Deg2Rad = M_PI/180,
+    // Finds the degrees from radians
+    Rad2Deg = 180/M_PI;
 
-// Functions for void User
-  void Thresholds ( float Variable, int Max, int Min )
-  {
-    if (Variable > Max)
-      { Variable = 100; }
-    else if (Variable < -Max)
-      { Variable = -100; }
-  }
-
-  bool RemixControl = true;
-
-  void RemixEnable ()
-  {
-    RemixControl = !RemixControl;
-  }
-
-  bool RemixControlEnabled ()
-  {
-    return RemixControl;
-  }
-
-  bool WildControl = true;
-
-  void WildEnable ()
-  {
-    WildControl = !WildControl;
-  }
-
-  bool WildControlEnabled ()
-  {
-    return WildControl;
-  }
-
+// Functions for all.
   void MecanumSpin ( float Y, float X, float R )
   {
     LF.spin ( fwd, Y + X + R, pct );
@@ -56,66 +23,59 @@
     RB.spin ( fwd, Y + X - R, pct );
   }
 
-// Functions for auton.
-  float Clamp ( float value, float min, float max )
-  {
-    if ( value > max )
-    { return max; }
-    else if(value < min)
-    { return min; }
-    else
-    { return value; }
-  }
 
-  void SpinDrive(int lVel, int rVel)
+  void StopAll(bool LFM, bool RFM, bool LBM, bool RBM)
   {
-    LF.spin(fwd, lVel, rpm);
-    LB.spin(fwd, lVel, rpm);
-
-    RF.spin(fwd, rVel, rpm);
-    RB.spin(fwd, rVel, rpm);
-  }
-
-  void StopAll(bool LMs, bool RMs)
-  {
-    if(LMs == true)
+    if ( LFM == true )
     {
       LF.stop();
-      LB.stop();
     }
-
-    if(RMs == true)
+    if ( RFM == true )
     {
       RF.stop();
+    }
+    if ( LBM == true )
+    {
+      LB.stop();
+    }
+    if ( RBM == true) 
+    {
       RB.stop();
     }
   }
 
-  void SpinForDrive(float lDeg, float rDeg, int lVel, int rVel, bool next)
+// Functions for user.
+  void Thresholds ( float Variable, int Max )
   {
-    LF.spinFor(fwd, lDeg, deg, lVel, rpm, false);
-    LB.spinFor(fwd, lDeg, deg, lVel, rpm, false);
-
-    RB.spinFor(fwd, rDeg, deg, rVel, rpm, false);
-    RB.spinFor(fwd, rDeg, deg, rVel, rpm, next);
+    if (Variable > Max)
+      { Variable = 100; }
+    else if (Variable < -Max)
+      { Variable = -100; }
   }
 
-  void TimeDrv(int Lvel, int Rvel, float milsec)
+  void DriverControl ( int Y, int X, int R, int Max )
   {
-    SpinDrive(Lvel, Rvel);
-
-    wait(milsec, sec);
-
-    StopAll(true, true);
+    Thresholds ( Y, Max );
+    Thresholds ( X, Max );
+    Thresholds ( R, Max );
+    MecanumSpin ( Y, X, R );
   }
 
-  void DegDrv(int vel, float dist, bool next)
+// Functions for auto.
+  void MecanumMoveTheta ( float theta, float power, float stop)
   {
-    float rot = ((dist/wheelCirc) * 360) * driveGR;
-    SpinForDrive(rot, rot, vel, vel, next);
-  }
+    theta *= Deg2Rad;
+    float Y = sin(theta);
+    float X = cos(theta);
 
-  void DegTurn( int vel, float rotation)
-  {
+    LF.spin ( fwd, (Y + X) * power, pct );
+    RF.spin ( fwd, (Y - X) * power, pct );
+    LB.spin ( fwd, (Y - X) * power, pct );
+    RB.spin ( fwd, (Y + X) * power, pct );
 
+    wait (stop, msec);
+
+    StopAll(true, true, true, true);
+
+    wait (stop,msec );
   }

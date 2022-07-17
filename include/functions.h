@@ -1,27 +1,14 @@
 #include "vex.h"
 
-void Thresholds ( float Variable, int Max, int Min );
+// Functions for all.
+  void MecanumSpin ( float Y, float X, float R );
 
-void RemixEnable ();
+  void StopAll (bool LFM, bool RFM, bool LBM, bool RBM);
 
-bool RemixControlEnabled ();
+// Functions for user.
+  void Thresholds ( float Variable, int Max );
 
-void WildEnable ();
+  void DriverControl ( int Y, int X, int R, int Max );
 
-bool WildControlEnabled ();
-
-void MecanumSpin ( float X, float Y, float R );
-
-float Clamp ( float value, float min, float max );
-
-void SpinDrive(int lVel, int rVel);
-
-void StopAll(bool LMs, bool RMs);
-
-void SpinForDrive(float lDeg, float rDeg, int lVel, int rVel, bool next);
-
-void TimeDrv(int Lvel, int Rvel, float milsec);
-
-void DegDrv(int vel, float dist, bool next);
-
-void DegTurn();
+// Functions for auto.
+  void MecanumMoveTheta ( float theta, float power, float stop);
