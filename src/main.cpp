@@ -35,6 +35,24 @@ void user ( void )
   
     DriverControl ( Y1Thres, X1Thres, R1Thres, MaxThres );
     DriverControl ( Y2Thres, X2Thres, R2Thres, MaxThres );
+
+    if ( Wild.ButtonL2.pressing() )
+    {
+      Intake.spin(fwd, 100, pct);
+    }
+    else
+    {
+      Intake.stop();
+    }
+
+    if ( Remix.ButtonL2.pressing() )
+    {
+      Intake.spin(fwd, 100, pct);
+    }
+    else
+    {
+      Intake.stop();
+    }
    
     wait ( 20, msec );
   }
