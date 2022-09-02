@@ -11,7 +11,7 @@ motor LB = motor ( PORT11, ratio6_1, false );
 motor RB = motor ( PORT19, ratio6_1, true );
 
 motor Fly = motor ( PORT5, ratio6_1, false);
-motor Intake = motor ( PORT6, ratio6_1, false);
+motor Intake = motor ( PORT6, ratio6_1, true);
 motor Angle = motor ( PORT7, ratio18_1, false);
 
 inertial Vigour = inertial(PORT6);
