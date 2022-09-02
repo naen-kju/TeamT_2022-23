@@ -12,7 +12,9 @@
     // Finds the radians from degrees
     Deg2Rad = M_PI/180,
     // Finds the degrees from radians
-    Rad2Deg = 180/M_PI;
+    Rad2Deg = 180/M_PI,
+    // Time for wait in msec
+    coolDown = 3.0;
 
 // Functions for all.
   void MecanumSpin ( float Y, float X, float R )
@@ -22,7 +24,6 @@
     RF.spin ( fwd, Y - X - R, pct );
     RB.spin ( fwd, Y + X - R, pct );
   }
-
 
   void StopAll(bool LFM, bool RFM, bool LBM, bool RBM)
   {
@@ -64,7 +65,6 @@
 // Functions for auto.
   void MecanumMoveTheta ( float theta, float power, float stop)
   {
-    theta *= Deg2Rad;
     float Y = sin(theta);
     float X = cos(theta);
 
@@ -73,9 +73,9 @@
     LB.spin ( fwd, (Y - X) * power, pct );
     RB.spin ( fwd, (Y + X) * power, pct );
 
-    wait (stop, msec);
+    wait ( coolDown, msec);
 
     StopAll(true, true, true, true);
 
-    wait (stop,msec );
+    wait ( coolDown,msec );
   }
