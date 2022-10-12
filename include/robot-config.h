@@ -5,8 +5,7 @@ using code = vision::code;
 
 extern brain Cortex;
 
-extern controller Remix;
-extern controller Wild;
+extern controller Con1;
 
 extern motor LF;
 extern motor RF;
@@ -15,12 +14,12 @@ extern motor RB;
 
 extern motor Fly;
 extern motor Intake;
-extern motor Angle;
+extern motor Roll;
 
-extern inertial Vigour;
-extern gps Pilot;
-extern optical Chroma;
-extern distance Ambit;
+extern inertial Gyro;
+extern gps Nav;
+extern optical Colour;
+extern distance Dist;
 
 // Used to initialize code/tasks/devices added using tools in VEXcode Pro.
 void  vexcodeInit ( void );

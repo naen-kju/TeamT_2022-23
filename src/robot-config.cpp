@@ -1,23 +1,22 @@
-#include "functions.h"
+#include "vex.h"
 
-brain  Cortex;
+brain Cortex;
 
-controller Remix = controller ( primary );
-controller Wild = controller ( partner );
+controller Con1 = controller ( primary );
 
-motor LF = motor ( PORT2, ratio6_1, false );
-motor RF = motor ( PORT10, ratio6_1, true );
-motor LB = motor ( PORT11, ratio6_1, false );
-motor RB = motor ( PORT19, ratio6_1, true );
+motor LF = motor ( PORT19, ratio6_1, false );
+motor RF = motor ( PORT11, ratio6_1, true );
+motor LB = motor ( PORT10, ratio6_1, false );
+motor RB = motor ( PORT2, ratio6_1, true );
 
-motor Fly = motor ( PORT5, ratio6_1, false);
-motor Intake = motor ( PORT6, ratio6_1, true);
-motor Angle = motor ( PORT7, ratio18_1, false);
+motor Fly = motor ( PORT4, ratio6_1, false) ;
+motor Intake = motor ( PORT3, ratio18_1, true) ;
+motor Roll = motor ( PORT16, ratio18_1, false );
 
-inertial Vigour = inertial(PORT6);
-gps Pilot = gps ( PORT7, 0, 0, mm, 0, right );
-optical Chroma = optical ( PORT8, true );
-distance Ambit = distance ( PORT9 );
+inertial Gyro = inertial ( PORT7 );
+gps Nav = gps ( PORT6, 0, 0, mm, 0, right );
+optical Colour = optical ( PORT8, true );
+distance Dist = distance ( PORT9 );
 
 bool RemoteControlCodeEnabled = true;
 
