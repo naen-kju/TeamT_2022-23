@@ -5,7 +5,7 @@ Global Variables for functions
 /---------------------------*/
   const float
     // Sets the gear ratio for the drivetrain
-    driveGR = 5/3,
+    driveGR = 1,
 
     // Sets the wheels' diameter (4 inches)
     wheelDia = 4,
@@ -33,12 +33,16 @@ Global Variables for functions
     RollOnF = false,
     RollOnR = false,
 
-    //Setup for different autons
+    // Setup for different autons
     Auto1 = false,
     Auto2 = false,
     Auto3 = false,
     Auto4 = false;
 
+  float
+    Y1Thres,
+    X1Thres,
+    R1Thres;
 
 /*----------------------/
 General functions for all

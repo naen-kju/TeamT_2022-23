@@ -6,6 +6,7 @@ competition Match;
 void pre_auton( void )
 {
   Gyro.calibrate();
+
   while ( Auto1 == false || Auto2 == false || Auto3 == false || Auto4 == false )
   if ( Con1.ButtonA.pressing() )
   {
