@@ -1,87 +1,118 @@
-#include "vision.h"
+#include "functions.h"
 
 competition Match;
 
 // Code for robot setup
 void pre_auton( void )
 {
+  vexcodeInit();
+
+  // Only allows color dection from optical
+  Colour.gestureDisable();
+
+  // Takes 3 seconds to calibrate inertial
   Gyro.calibrate();
 
-  while ( Auto1 == false || Auto2 == false || Auto3 == false || Auto4 == false )
-  if ( Con1.ButtonA.pressing() )
+  // Prints out auton selection on brain and enables auton selection thru controller 
+  while ( program == false)
   {
-    Auto1 = true;
+    conWaitAuton();
+    wait ( coolDown, msec );
   }
-  else if ( Con1.ButtonB.pressing() )
-  {
-    Auto2 = true;
-  }
-  else if ( Con1.ButtonX.pressing() )
-  {
-    Auto3 = true;
-  }
-  else if ( Con1.ButtonY.pressing() )
-  {
-    Auto4 = true;
-  }
-  wait ( 100, msec );
 }
 
 // Code for Autonomous Control period
 void auton ( void )
 {
-  if ( Auto1 == true )
+  if ( AutoNum == 1 ) // Match Blue Left Button Up
   {
-    Rolling ( 50, true, 1000 );
-    MoveFwdDeg ( 100, -8, 0, true );
-    TurnRDeg ( 30, 90 );
-    MoveFwdDeg ( 200, -120, 0, true);
-    Intaking ( -200, false, 5000 );
-    MoveFwdDeg ( 100, 80, 0, true );
-    Intake.stop();
-    TurnLDeg( 30, 90 );
-
-    /*TurnRDeg ( 30, 45 );
-    MoveFwdDeg ( 100, 24, 0, true);
-    Rolling ( 50, true, 1000 );
-    MoveFwdDeg ( 100, -12, 0, true);
-    TurnLDeg ( 30, 90 );
-    MoveFwdDeg ( 200, -128, 0, true);
-    Intaking ( -100, true, 5000 );*/
+    Colour.setLightPower(25);
+    MoveFwdDeg(75, -2, 0, true );
+    Rolling( 30, 500, reverse );
+    RollingCB(20);
+    MoveFwdDeg(75, 4, 0, true );
+    TurnRDeg(50, 45);
+    FlyW.spin(fwd, 67, pct);
+    MoveFwdDeg(125, 50, 0 , true );
+    TurnLDeg(30, 75);
+    wait ( 2000, msec );
+    Indexer1(); wait( 1250, msec );
+    Indexer1(); wait( 1000, msec );
+    FlyW.stop();
 
   }
-  if ( Auto2 == true )
-  {
-    MoveFwdDeg ( 100, 0, -40, true);
-    MoveFwdDeg ( 100, 8, 0, true);
-    Rolling (50, true, 1000 );
-    MoveFwdDeg ( 200, -8, 0, true );
-    TurnLDeg ( 30, 90 );
-    MoveFwdDeg ( 100, -120, 0, true );
-    Intaking ( -200, false, 5000 );
-    MoveFwdDeg ( 100, 80, 0, true );
-    Intake.stop();
 
-  }
-  if ( Auto3 == true )
+  else if ( AutoNum == 2 ) // Match Blue Right Button Right
   {
-    MoveFwdDeg ( 100, 4, 0, true );
-    Rolling ( 200, true, 1000 );
-    MoveFwdDeg ( 100, -8, 0, true );
-    TurnLDeg ( 30, 90 );
-    MoveFwdDeg ( 200, -120, 0, true);
-    MoveFwdDeg ( 200, 0, -240, true );
-    MoveFwdDeg ( 100, 12, 0, true );
-    Intaking ( 50, true, 1000 );
-    TurnRDeg( 30, 90 );
-    MoveFwdDeg ( 200, 60, 0, true );
-    Flying( 600, false, 1 );
-    wait ( 5000, msec );
-    Intaking ( 200, false, 1 );
+    Colour.setLightPower(25);
+    MoveFwdDeg ( 50, 0, 29, true);
+    MoveFwdDeg(75, -8, 0, true );
+    Rolling( 30, 500, reverse );
+    RollingCB(20);
+    MoveFwdDeg(75, 4, 0, true );
+    TurnLDeg(50, 45);
+    FlyW.spin(fwd, 67, pct);
+    MoveFwdDeg(125, 50, 0 , true );
+    TurnRDeg(30, 75);
+    wait ( 2000, msec );
+    Indexer1(); wait( 2000, msec );
+    Indexer1(); wait( 1000, msec );
+    FlyW.stop();
   }
-  if ( Auto4 == true)
-  {
 
+  else if ( AutoNum == 3 ) // Match Red Left Button Down
+  {
+    Colour.setLightPower(25);
+    MoveFwdDeg(75, -2, 0, true );
+    Rolling( 30, 500, reverse );
+    RollingCR(20);
+    MoveFwdDeg(75, 4, 0, true );
+    TurnRDeg(50, 45);
+    FlyW.spin(fwd, 65, pct);
+    MoveFwdDeg(125, 50, 0 , true );
+    TurnLDeg(30, 73);
+    wait ( 2000, msec );
+    Indexer1(); wait( 2000, msec );
+    Indexer1(); wait( 1000, msec );
+    FlyW.stop();
+  }
+
+  else if ( AutoNum == 4) // Match Red Right
+  {
+    Colour.setLightPower(25);
+    MoveFwdDeg ( 50, 0, 29, true);
+    MoveFwdDeg(75, -8, 0, true );
+    Rolling( 30, 500, reverse );
+    RollingCR(20);
+    MoveFwdDeg(75, 4, 0, true );
+    TurnLDeg(50, 45);
+    FlyW.spin(fwd, 67, pct);
+    MoveFwdDeg(125, 50, 0 , true );
+    TurnRDeg(30, 75);
+    wait ( 2000, msec );
+    Indexer1(); wait( 2000, msec );
+    Indexer1(); wait( 1000, msec );
+    FlyW.stop();
+  }
+
+  else if ( AutoNum == 5) // Skills Left
+  {
+    // BLANK
+  }
+
+  else if ( AutoNum == 6) // Skills Right
+  {
+    // BLANK
+  }
+
+  else if ( AutoNum == 7) // Test code
+  {
+    // BLANK
+  }
+
+  else if ( AutoNum == 8) // NaN
+  {
+    // BLANK
   }
 }
 
@@ -90,47 +121,69 @@ void user ( void )
 {
   SetMec ( coast );
 
-  float
-  Y1Thres, X1Thres, R1Thres;
-
+  // Loop to prevent driver control from exiting
   while (true)
   {
-    // Drivetrain
+    // Enables Basic Drivetrain control
     Y1Thres = Con1.Axis3.position ( pct ),
     X1Thres = Con1.Axis4.position ( pct ),
     R1Thres = Con1.Axis1.position ( pct );
     MecSpin ( Y1Thres, X1Thres, R1Thres );
 
-    // Intake
-    IntakeSpin();
+    // Enables Intake Control
+    IntRollSpin();
 
-    // Flywheel
+    // Enables FlyWheel Control
     FlySpin();
 
-    // Rollers
-    RollSpin();
+    // Roller w/ Optical
+ //   RollColourSpin();
 
+
+    // Used to save resources
     wait ( coolDown, msec );
   }
 }
 
-
+// Execution starting point
 int main ()
 {
-  Con1.ButtonL2.pressed(IntakeF);
-  Con1.ButtonL1.pressed(IntakeR);
-  Con1.ButtonR2.pressed(FlyF);
-  Con1.ButtonR1.pressed(FlyS);
-  Con1.ButtonY.pressed(RollF);
-  Con1.ButtonRight.pressed(RollR);
+  // Button presses callback functions for driver control
 
+  // Increases Intake speed by 50% when pressed once or held down
+  Con1.ButtonL2.pressed(IntRollF);
+
+  // Opposite Intake control will stop and do the same
+  Con1.ButtonL1.pressed(IntRollR);
+
+  // Increases Flywheel speed by 20% when pressed once or held down
+  Con1.ButtonR2.pressed(FlyF);
+
+  // Opposite flywheel control stops
+  Con1.ButtonR1.pressed(FlyS);
+
+  // Experimental roller control through optical sensor, stops when team color is seen
+  Con1.ButtonUp.pressed(RollerControl);
+
+  // Extends indexer once when pressed once 
+  Con1.ButtonA.pressed(Indexer1);
+
+  // Extends indexer trice when pressed once
+  Con1.ButtonLeft.pressed(Indexer3);
+
+  Con1.ButtonB.pressed(Expansion);
+
+  // Initializing Robot Configuration
   vexcodeInit ();
 
+  // Setup callbacks for auton and user control
   Match.autonomous ( auton );
   Match.drivercontrol ( user );
 
+  // Set up callback for pre auton control
   pre_auton ();
 
+  // While loop to prevent program from exiting
   while ( true )
   {
     wait ( 100, msec );

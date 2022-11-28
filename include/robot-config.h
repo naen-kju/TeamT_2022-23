@@ -12,14 +12,21 @@ extern motor RF;
 extern motor LB;
 extern motor RB;
 
-extern motor Fly;
-extern motor Intake;
-extern motor Roll;
+extern motor Fly0;
+extern motor Fly1;
+extern motor_group FlyW;
+
+extern motor IntRoll;
+extern motor Index;
+
+extern digital_out expand;
 
 extern inertial Gyro;
-extern gps Nav;
 extern optical Colour;
+/*
+extern gps Nav;
 extern distance Dist;
+*/
 
 // Used to initialize code/tasks/devices added using tools in VEXcode Pro.
 void  vexcodeInit ( void );
