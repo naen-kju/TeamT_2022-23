@@ -14,8 +14,8 @@ motor LB = motor ( PORT9, ratio18_1, true );
 motor RB = motor ( PORT3, ratio18_1, false );
 
 // Constructor for flywheel motors, combined both into one
-motor Fly0 = motor ( PORT4, ratio6_1, true) ;
-motor Fly1 = motor ( PORT16, ratio6_1, false) ;
+motor Fly0 = motor ( PORT5, ratio6_1, false) ;
+motor Fly1 = motor ( PORT18, ratio6_1, false) ;
 motor_group FlyW = motor_group (Fly0, Fly1);
 
 // Constructor for Intake/Roller combination motor
@@ -24,7 +24,8 @@ motor IntRoll = motor ( PORT12, ratio18_1, false) ;
 // Constructor for indexer
 motor Index = motor ( PORT10, ratio18_1, false );
 
-digital_out expand = digital_out ( Cortex.ThreeWirePort.A ) ;
+digital_out expand0 = digital_out ( Cortex.ThreeWirePort.A ) ;
+digital_out expand1 = digital_out ( Cortex.ThreeWirePort.B ) ;
 
 // Constructor for inertial sensor
 inertial Gyro = inertial ( PORT7 );

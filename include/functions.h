@@ -401,7 +401,8 @@
     wait(1000, msec);
     if ( Con1.ButtonB.pressing() )
     {
-      expand.set(true);
+      expand0.set(true);
+      expand1.set(true);
     }
   }
 

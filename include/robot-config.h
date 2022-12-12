@@ -19,7 +19,8 @@ extern motor_group FlyW;
 extern motor IntRoll;
 extern motor Index;
 
-extern digital_out expand;
+extern digital_out expand0;
+extern digital_out expand1;
 
 extern inertial Gyro;
 extern optical Colour;

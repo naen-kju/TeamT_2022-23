@@ -13,12 +13,11 @@ void pre_auton( void )
   // Takes 3 seconds to calibrate inertial
   Gyro.calibrate();
 
+  expand0.set(false);
+  expand1.set(false);
+
   // Prints out auton selection on brain and enables auton selection thru controller 
-  while ( program == false)
-  {
-    conWaitAuton();
-    wait ( coolDown, msec );
-  }
+  conWaitAuton();
 }
 
 // Code for Autonomous Control period
@@ -32,9 +31,10 @@ void auton ( void )
     RollingCB(20);
     MoveFwdDeg(75, 4, 0, true );
     TurnRDeg(50, 45);
-    FlyW.spin(fwd, 67, pct);
+    FlyW.spin(fwd, 60, pct);
     MoveFwdDeg(125, 50, 0 , true );
-    TurnLDeg(30, 75);
+    TurnLDeg(30, 80);
+    MoveFwdDeg(75, 10, 0 , true );
     wait ( 2000, msec );
     Indexer1(); wait( 1250, msec );
     Indexer1(); wait( 1000, msec );
@@ -51,9 +51,9 @@ void auton ( void )
     RollingCB(20);
     MoveFwdDeg(75, 4, 0, true );
     TurnLDeg(50, 45);
-    FlyW.spin(fwd, 67, pct);
+    FlyW.spin(fwd, 60, pct);
     MoveFwdDeg(125, 50, 0 , true );
-    TurnRDeg(30, 75);
+    TurnRDeg(30, 70);
     wait ( 2000, msec );
     Indexer1(); wait( 2000, msec );
     Indexer1(); wait( 1000, msec );
@@ -68,9 +68,10 @@ void auton ( void )
     RollingCR(20);
     MoveFwdDeg(75, 4, 0, true );
     TurnRDeg(50, 45);
-    FlyW.spin(fwd, 65, pct);
+    FlyW.spin(fwd, 67, pct);
     MoveFwdDeg(125, 50, 0 , true );
-    TurnLDeg(30, 73);
+    TurnLDeg(30, 80);
+    MoveFwdDeg(75, 10, 0 , true );
     wait ( 2000, msec );
     Indexer1(); wait( 2000, msec );
     Indexer1(); wait( 1000, msec );
@@ -88,29 +89,29 @@ void auton ( void )
     TurnLDeg(50, 45);
     FlyW.spin(fwd, 67, pct);
     MoveFwdDeg(125, 50, 0 , true );
-    TurnRDeg(30, 75);
+    TurnRDeg(30, 70);
     wait ( 2000, msec );
     Indexer1(); wait( 2000, msec );
     Indexer1(); wait( 1000, msec );
     FlyW.stop();
   }
 
-  else if ( AutoNum == 5) // Skills Left
+  else if ( AutoNum == 5 ) // Skills Left
   {
     // BLANK
   }
 
-  else if ( AutoNum == 6) // Skills Right
+  else if ( AutoNum == 6 ) // Skills Right
   {
     // BLANK
   }
 
-  else if ( AutoNum == 7) // Test code
+  else if ( AutoNum == 7 ) // Test code
   {
     // BLANK
   }
 
-  else if ( AutoNum == 8) // NaN
+  else if ( AutoNum == 8 ) // NaN
   {
     // BLANK
   }
