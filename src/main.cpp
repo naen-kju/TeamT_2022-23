@@ -6,26 +6,26 @@ competition Match;
 // Pre Auton code in function in auton.cpp
 void pre_auton( void )
 {
-  preautoncall();
+  PreAutonCall();
 }
 
 // Auton code in function in auton.cpp
 void auton ( void )
 {
-  autoncall();
+  AutonCall();
 }
 
 // User code in usercontrol.cpp
 void user ( void )
 {
-  usercall();
+  UserCall();
 }
 
 // Program execution begins here
 int main ()
 {
   // Usercontrol buttons in function
-  mainusercall();
+  MainUserCall();
 
   // Initializing Robot Configuration
   vexcodeInit ();

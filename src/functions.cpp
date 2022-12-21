@@ -2,6 +2,7 @@
 
 /*  FUNCTIONS FOR FUNCTIONS
 */
+  // Function to control overall drivetrain movement
   void MecSpin ( float Y, float X, float R )
   {
     LF.spin ( fwd, Y + X + R, pct );
@@ -9,6 +10,8 @@
     RF.spin ( fwd, Y - X - R, pct );
     RB.spin ( fwd, Y + X - R, pct );
   }
+
+  // Function to set brake type for drivetrain motors
   void SetMec ( brakeType type )
   {
     LF.setBrake ( type );
@@ -16,6 +19,8 @@
     RF.setBrake ( type );
     RB.setBrake ( type );
   }
+
+  // Function to clip a value between a min and max range
   float Clip( float value, float min, float max )
   {
     if(value > max)
@@ -27,6 +32,7 @@
 
 /*  FUNCTIONS FOR USERCONTROL
 */
+  // Function to control intake roller in user control
   int intRollSpeed = 0;
   void IntRolling () 
   {
@@ -62,6 +68,7 @@
     }
   }
 
+  // Function to control flywheel in user control
   int flySpeed = 0;
   void FlySpinning()
   {
@@ -86,7 +93,7 @@
     }
   }
   
-
+  // Function to control indexer in user control
   void Indexer()
   {
     while (Con1.ButtonA.pressing())
@@ -96,6 +103,7 @@
     }
   }
 
+  // Function to control pneumatic expansion in user control
   void Expansion()
   {
     wait(1000, msec);
@@ -108,6 +116,7 @@
 
 /*  FUNCTIONS FOR AUTON
 */
+  // Function to move the robot forward a certain distance in degrees
   void MoveFwdDeg ( float vel, float Y, float X, bool next )
   {
     const float
@@ -122,6 +131,8 @@
     LB.spinFor( fwd, rY - rX, deg, vel, rpm, false );
     RB.spinFor( fwd, rY + rX, deg, vel, rpm, next );
   }
+
+  // Function to turn the robot right a certain number of degrees
   void TurnRDeg ( float vel, float degr )
   {
     SetMec ( hold );
@@ -133,6 +144,8 @@
     MecSpin ( 0, 0, 0 );
     Gyro.resetRotation();
   }
+
+  // Function to turn the robot left a certain number of degrees
   void TurnLDeg ( float vel, float degr )
   {
     SetMec ( hold );
@@ -144,6 +157,8 @@
     MecSpin ( 0, 0, 0 );
     Gyro.resetRotation();
   }
+
+  // Function to control flywheel in autonomous
   void Flying ( float Vel, bool Stop, float Time )
   {
     FlyW.spin(fwd, Vel, pct);
@@ -153,6 +168,8 @@
       FlyW.stop();
     }
   }
+
+  // Function to control intake in autonomous
   void Intaking ( float Vel, bool Stop, float Time )
   {
     IntRoll.spin ( fwd, Vel, rpm );
@@ -162,12 +179,16 @@
       IntRoll.stop();
     }
   }
+
+  // Function to control intake roller in autonomous
   void Rolling( float vel, float time, directionType dir )
   {
     IntRoll.spin(dir, vel, pct );
     wait ( time, msec );
     IntRoll.stop();
   }
+
+  // Function to control intake roller in autonomous to roll to red
   void RollingCB( float vel )
   {
     Rolling( 30, 500, reverse );
@@ -180,6 +201,8 @@
     }    
     IntRoll.stop();
   }
+
+  // Function to control intake roller in autonomous to roll to blue
   void RollingCR( float vel )
   {
     Rolling( 30, 500, reverse );
@@ -195,12 +218,14 @@
 
 /*  FUNCTIONS FOR MAIN.CPP
 */
-  void mainusercall()
+  // Function to control user control tasks
+  void MainUserCall()
   {
     Con1.ButtonB.pressed(Expansion);
   }
 
-  int conAuton ()
+  // Function to determine which autonomous mode to run
+  int ConAuton ()
   {
     int AutoNum = 0;
 
@@ -243,9 +268,10 @@
     return AutoNum;
   }
 
-  void autoncall()
+  // Function to call autonomous tasks
+  void AutonCall()
   {
-    int AutoNum = conAuton();
+    int AutoNum = ConAuton();
     if ( AutoNum == 1 ) // Match Blue Left Button Up
     {
       Colour.setLightPower(25);
@@ -340,7 +366,8 @@
     }
   }
 
-  void usercall()
+  // Function to call user control tasks
+  void UserCall()
   {
     SetMec ( coast );
     while (true)
@@ -356,7 +383,8 @@
     }
   }
 
-  void preautoncall()
+  // Function to run code before autonomous tasks
+  void PreAutonCall()
   {
     vexcodeInit();
 
@@ -370,7 +398,7 @@
     expand1.set(false);
 
     // Prints out auton selection on brain and enables auton selection thru controller 
-    conAuton();
+    ConAuton();
   }
 
   

@@ -3,7 +3,7 @@
 
 /* FUNCTIONS FOR FUNCTIONS
 */
-  // Function to control drivetrain movement using joystick input
+  // Function to control overall drivetrain movement
   void MecSpin ( float Y, float X, float R );
 
   // Function to set brake type for drivetrain motors
@@ -46,27 +46,27 @@
   // Function to control intake roller in autonomous
   void Rolling( float vel, float time, vex::directionType dir );
 
-  // Function to control intake roller in autonomous to intake cubes
+  // Function to control intake roller in autonomous to roll to red
   void RollingCB( float vel );
 
-  // Function to control intake roller in autonomous to release cubes
+  // Function to control intake roller in autonomous to roll to red
   void RollingCR( float vel );
 
 /* FUNCTIONS FOR MAIN.CPP
 */
   // Function to control user control tasks
-  void mainusercall();
+  void MainUserCall();
 
   // Function to determine which autonomous mode to run
-  int conAuton ();
+  int ConAuton ();
 
   // Function to call autonomous tasks
-  void autoncall();
+  void AutonCall();
 
   // Function to call user control tasks
-  void usercall();
+  void UserCall();
   
   // Function to run code before autonomous tasks
-  void preautoncall();
+  void PreAutonCall();
 
 #endif // FUNCTIONS_H
