@@ -3,16 +3,16 @@
 /*  FUNCTIONS FOR FUNCTIONS
 */
   // Function to control overall drivetrain movement
-  void MecSpin ( float Y, float X, float R )
+  void TankSpin ( float Y, float R )
   {
-    LF.spin ( fwd, Y + X + R, pct );
-    LB.spin ( fwd, Y - X + R, pct );
-    RF.spin ( fwd, Y - X - R, pct );
-    RB.spin ( fwd, Y + X - R, pct );
+    LF.spin ( fwd, Y + R, pct );
+    LB.spin ( fwd, Y + R, pct );
+    RF.spin ( fwd, Y - R, pct );
+    RB.spin ( fwd, Y - R, pct );
   }
 
   // Function to set brake type for drivetrain motors
-  void SetMec ( brakeType type )
+  void SetTank ( brakeType type )
   {
     LF.setBrake ( type );
     LB.setBrake ( type );
@@ -24,10 +24,11 @@
   float Clip( float value, float min, float max )
   {
     if(value > max)
-    {   return max; }
+    {   return max;   }
     else if(value < min)
-    {   return min; }
-    return value;
+    {   return min;   }
+    else
+    {   return value; }
   }
 
 /*  FUNCTIONS FOR USERCONTROL
@@ -135,26 +136,26 @@
   // Function to turn the robot right a certain number of degrees
   void TurnRDeg ( float vel, float degr )
   {
-    SetMec ( hold );
+    SetTank ( hold );
     while ( Gyro.rotation( deg) - degr <= 0 )
     {
-      MecSpin ( 0, 0, vel );
+      TankSpin ( 0, vel );
       wait (5.0, msec);
     }
-    MecSpin ( 0, 0, 0 );
+    TankSpin ( 0, 0 );
     Gyro.resetRotation();
   }
 
   // Function to turn the robot left a certain number of degrees
   void TurnLDeg ( float vel, float degr )
   {
-    SetMec ( hold );
+    SetTank ( hold );
     while ( Gyro.rotation( deg) + degr >= 0 )
     {
-      MecSpin ( 0, 0, -vel );
+      TankSpin ( 0, -vel );
       wait ( 5.0, msec );
     }
-    MecSpin ( 0, 0, 0 );
+    TankSpin ( 0, 0 );
     Gyro.resetRotation();
   }
 
@@ -369,14 +370,13 @@
   // Function to call user control tasks
   void UserCall()
   {
-    SetMec ( coast );
+    SetTank ( coast );
     while (true)
     {
       int 
       Y1Thres = Con1.Axis3.position ( pct ),
-      X1Thres = Con1.Axis4.position ( pct ),
       R1Thres = Con1.Axis1.position ( pct );
-      MecSpin ( Y1Thres, X1Thres, R1Thres );
+      TankSpin ( Y1Thres, R1Thres );
       IntRolling();
       FlySpinning();
       wait ( 5, msec );

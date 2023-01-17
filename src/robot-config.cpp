@@ -7,10 +7,10 @@
 // Declare global objects for the brain, controller, and drivetrain motors
 brain Cortex;
 controller Con1 = controller ( primary );
-motor LF = motor ( PORT20, ratio18_1, true );
-motor RF = motor ( PORT11, ratio18_1, false );
-motor LB = motor ( PORT10, ratio18_1, true );
-motor RB = motor ( PORT2, ratio18_1, false );
+motor LF = motor ( PORT20, ratio18_1, false );
+motor RF = motor ( PORT11, ratio18_1, true );
+motor LB = motor ( PORT10, ratio18_1, false );
+motor RB = motor ( PORT2, ratio18_1, true );
 
 // Declare global objects for the flywheel motors and motor group
 motor Fly0 = motor ( PORT4, ratio6_1, true) ;

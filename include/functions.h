@@ -4,10 +4,10 @@
 /* FUNCTIONS FOR FUNCTIONS
 */
   // Function to control overall drivetrain movement
-  void MecSpin ( float Y, float X, float R );
+  void TankSpin ( float Y, float R );
 
   // Function to set brake type for drivetrain motors
-  void SetMec ( vex::brakeType type );
+  void SetTank ( vex::brakeType type );
 
   // Function to clip a value between a min and max range
   float Clip( float value, float min, float max );
