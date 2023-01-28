@@ -5,10 +5,10 @@
   // Function to control overall drivetrain movement
   void TankSpin ( float Y, float R )
   {
-    LF.spin ( fwd, Y + R, pct );
-    LB.spin ( fwd, Y + R, pct );
-    RF.spin ( fwd, Y - R, pct );
-    RB.spin ( fwd, Y - R, pct );
+    LF.spin ( fwd, Y - R, pct );
+    LB.spin ( fwd, Y - R, pct );
+    RF.spin ( fwd, Y + R, pct );
+    RB.spin ( fwd, Y + R, pct );
   }
 
   // Function to set brake type for drivetrain motors
@@ -31,6 +31,17 @@
     {   return value; }
   }
 
+  // Code for PID
+  double PID(double TS, double CS, double kP, double kI, double kD )
+  {
+    double Error, Integral, Derivative, PrevError, Output;
+    Error = TS - CS;
+    Integral += Error;
+    Derivative = Error - PrevError;
+    Output = kP*Error + kI*Integral + kD*Derivative;
+    return Output;
+  }
+
 /*  FUNCTIONS FOR USERCONTROL
 */
   // Function to control intake roller in user control
@@ -43,9 +54,13 @@
       {
         intRollSpeed = 0;
       }
+      else if ( intRollSpeed < 25)
+      {
+        intRollSpeed = 25;
+      }
       else
       {
-        intRollSpeed += 50;
+        intRollSpeed = 100;
       }
       IntRoll.spin(fwd, intRollSpeed, pct);
       wait (150, msec);
@@ -56,9 +71,9 @@
       {
         intRollSpeed = 0;
       }
-      else if ( intRollSpeed > -100)
+      else if ( intRollSpeed > -25)
       {
-        intRollSpeed -= 50;
+        intRollSpeed = -25;
       }
       else
       {
@@ -77,7 +92,7 @@
     {
       if (flySpeed == 0)
       {
-        flySpeed = 50;
+        flySpeed = 65;
       }
       else
       {
@@ -100,18 +115,21 @@
     while (Con1.ButtonA.pressing())
     {
       Index.spinFor ( fwd, 180, deg, 150, rpm );
-      wait(250, msec);
+      wait(300, msec);
     }
   }
 
   // Function to control pneumatic expansion in user control
   void Expansion()
   {
-    wait(1000, msec);
-    if ( Con1.ButtonB.pressing() )
+    if ( Con1.ButtonB.pressing())
     {
-      expand0.set(true);
-      expand1.set(true);
+      wait(1000, msec);
+      if ( Con1.ButtonB.pressing() )
+      {
+        expand0.set(true);
+        expand1.set(true);
+      }
     }
   }
 
@@ -375,10 +393,11 @@
     {
       int 
       Y1Thres = Con1.Axis3.position ( pct ),
-      R1Thres = Con1.Axis1.position ( pct );
+      R1Thres = Con1.Axis1.position ( pct )/2.5;
       TankSpin ( Y1Thres, R1Thres );
       IntRolling();
       FlySpinning();
+      Indexer();
       wait ( 5, msec );
     }
   }
