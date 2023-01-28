@@ -398,6 +398,7 @@
       IntRolling();
       FlySpinning();
       Indexer();
+      Expansion();
       wait ( 5, msec );
     }
   }
