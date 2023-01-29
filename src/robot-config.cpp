@@ -24,6 +24,9 @@ motor Index = motor ( PORT6, ratio18_1, false );
 // Declare global objects for the pneumatic solenoids
 digital_out expand0 = digital_out ( Cortex.ThreeWirePort.A ) ;
 digital_out expand1 = digital_out ( Cortex.ThreeWirePort.B ) ;
+digital_out expand2 = digital_out ( Cortex.ThreeWirePort.C ) ;
+digital_out expand3 = digital_out ( Cortex.ThreeWirePort.D ) ;
+
 
 // Declare a global object for the inertial sensor
 inertial Gyro = inertial ( PORT8 );
