@@ -24,8 +24,6 @@ extern motor Index;
 // Declare global objects for the pneumatic solenoids
 extern digital_out expand0;
 extern digital_out expand1;
-extern digital_out expand2;
-extern digital_out expand3;
 
 // Declare a global object for the inertial sensor
 extern inertial Gyro;

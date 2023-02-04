@@ -29,7 +29,7 @@
 /* FUNCTIONS FOR AUTON
 */
   // Function to move the robot forward a certain distance in degrees
-  void MoveFwdDeg ( float vel, float Y, float X, bool next );
+  void MoveFwdDeg ( float vel, float Y );
 
   // Function to turn the robot right a certain number of degrees
   void TurnRDeg ( float vel, float degr );
@@ -58,7 +58,7 @@
   void MainUserCall();
 
   // Function to determine which autonomous mode to run
-  int ConAuton ();
+  void ConAuton ();
 
   // Function to call autonomous tasks
   void AutonCall();

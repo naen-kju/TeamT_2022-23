@@ -136,19 +136,18 @@
 /*  FUNCTIONS FOR AUTON
 */
   // Function to move the robot forward a certain distance in degrees
-  void MoveFwdDeg ( float vel, float Y, float X, bool next )
+  void MoveFwdDeg ( float vel, float Y, bool next )
   {
-    const float
-    driveGR = 1,
+    float
+    driveGR = 60/84,
     wheelDia = 4,
-    wheelCirc = wheelDia * M_PI;
+    wheelCirc = wheelDia * M_PI,
 
-    float rY = ((Y/wheelCirc)*driveGR)*360;
-    float rX = ((X/wheelCirc)*driveGR)*360;
-    LF.spinFor( fwd, rY + rX, deg, vel, rpm, false );
-    RF.spinFor( fwd, rY - rX, deg, vel, rpm, false );
-    LB.spinFor( fwd, rY - rX, deg, vel, rpm, false );
-    RB.spinFor( fwd, rY + rX, deg, vel, rpm, next );
+    dist = (Y / wheelCirc)*360;
+    LF.spinFor( fwd, dist, degrees, vel, rpm, false );
+    RF.spinFor( fwd, dist, degrees, vel, rpm, false );
+    LB.spinFor( fwd, dist, degrees, vel, rpm, false );
+    RB.spinFor( fwd, dist, degrees, vel, rpm, next );
   }
 
   // Function to turn the robot right a certain number of degrees
@@ -210,28 +209,22 @@
   // Function to control intake roller in autonomous to roll to red
   void RollingCB( float vel )
   {
-    Rolling( 30, 500, reverse );
+    Rolling( 100, 500, reverse );
     Colour.setLightPower(25);
     wait (250, sec );
     IntRoll.spin(fwd, vel, pct);
-    while ( Colour.color() == red )
-    {
-      wait ( 5.0, msec);
-    }    
+    waitUntil(Colour.color() == blue);
     IntRoll.stop();
   }
 
   // Function to control intake roller in autonomous to roll to blue
   void RollingCR( float vel )
   {
-    Rolling( 30, 500, reverse );
+    Rolling( 100, 500, reverse );
     Colour.setLightPower(25);
     wait (250, sec );
     IntRoll.spin(fwd, vel, pct);
-    while ( Colour.color() == blue )
-    {
-      wait ( 5.0, msec);
-    }    
+    waitUntil(Colour.color() == red);
     IntRoll.stop();
   }
 
@@ -244,124 +237,103 @@
   }
 
   // Function to determine which autonomous mode to run
-  int ConAuton ()
+  int AutoNum = 0;
+  void ConAuton ()
   {
-    int AutoNum = 0;
-
     while ( AutoNum == 0 )
     {
       if ( Con1.ButtonUp.pressing() ) // Match Blue Left
       {
         AutoNum = 1;
+        Con1.Screen.print("Match Blue Left");
       }
       else if ( Con1.ButtonRight.pressing() ) // Match Blue Right
       {
         AutoNum = 2;
+        Con1.Screen.print("Match Blue Right");
+
       }
       else if ( Con1.ButtonDown.pressing() ) // Match Red Left
       {
         AutoNum = 3;
+        Con1.Screen.print("Match Red Left");
       }
       else if ( Con1.ButtonLeft.pressing() ) // Match Red Right
       {
         AutoNum = 4;
+        Con1.Screen.print("Match Red Right");
       }
       else if ( Con1.ButtonX.pressing() ) // Skills Left
       {
         AutoNum = 5;
+        Con1.Screen.print("Skills Left");
       }
       else if ( Con1.ButtonA.pressing() ) // Skills Right
       {
         AutoNum = 6;
+        Con1.Screen.print("Skills Right");
       }
       else if ( Con1.ButtonB.pressing() ) // Testing
       {
         AutoNum = 7;
+        Con1.Screen.print("Testing");
       }
       else if ( Con1.ButtonY.pressing() ) // NaN
       {
         AutoNum = 8;
+        Con1.Screen.print("NaN");
       }
       wait (5.0, msec);
     }
-    return AutoNum;
   }
 
   // Function to call autonomous tasks
   void AutonCall()
   {
-    int AutoNum = ConAuton();
     if ( AutoNum == 1 ) // Match Blue Left Button Up
     {
-      Colour.setLightPower(25);
-      MoveFwdDeg(75, -2, 0, true );
-      Rolling( 30, 500, reverse );
-      RollingCB(20);
-      MoveFwdDeg(75, 4, 0, true );
-      TurnRDeg(50, 45);
-      FlyW.spin(fwd, 60, pct);
-      MoveFwdDeg(125, 50, 0 , true );
-      TurnLDeg(30, 80);
-      MoveFwdDeg(75, 10, 0 , true );
-      wait ( 2000, msec );
-      Index.spinFor(fwd, 180, deg, 150, rpm); wait( 1250, msec );
-      Index.spinFor(fwd, 180, deg, 150, rpm); wait( 1000, msec );
-      FlyW.stop();
-
+      MoveFwdDeg(50, -3, true);
+      Rolling( 20, 500, reverse );
+      MoveFwdDeg(30, 3, true);
+      TurnLDeg(30, 3.5);
+      Flying(85, false, 0);
+      wait (3500, msec);
+      Index.spinFor(fwd, 180, deg, 200, rpm ); wait(750,msec);
+      Index.spinFor(fwd, 180, deg, 200, rpm ); wait(500,msec);
+      Flying(0, false, 0);
     }
 
     else if ( AutoNum == 2 ) // Match Blue Right Button Right
     {
-      Colour.setLightPower(25);
-      MoveFwdDeg ( 50, 0, 29, true);
-      MoveFwdDeg(75, -8, 0, true );
-      Rolling( 30, 500, reverse );
-      RollingCB(20);
-      MoveFwdDeg(75, 4, 0, true );
-      TurnLDeg(50, 45);
-      FlyW.spin(fwd, 60, pct);
-      MoveFwdDeg(125, 50, 0 , true );
-      TurnRDeg(30, 70);
-      wait ( 2000, msec );
-      Index.spinFor(fwd, 180, deg, 150, rpm); wait( 1250, msec );
-      Index.spinFor(fwd, 180, deg, 150, rpm); wait( 1000, msec );
-      FlyW.stop();
+      MoveFwdDeg(50, -18, true);
+      TurnRDeg(30, 90);
+      MoveFwdDeg(50, -5, true);
+      Rolling( 20, 500, reverse );
+      MoveFwdDeg(30, 3, true);
+      TurnRDeg(30, 1);
+      Flying(85, false, 0);
+      wait (3500, msec);
+      Index.spinFor(fwd, 180, deg, 200, rpm ); wait(1000,msec);
+      Index.spinFor(fwd, 180, deg, 200, rpm ); wait(500,msec);
+      Flying(0, false, 0);
     }
 
     else if ( AutoNum == 3 ) // Match Red Left Button Down
     {
-      Colour.setLightPower(25);
-      MoveFwdDeg(75, -2, 0, true );
-      Rolling( 30, 500, reverse );
-      RollingCR(20);
-      MoveFwdDeg(75, 4, 0, true );
-      TurnRDeg(50, 45);
-      FlyW.spin(fwd, 67, pct);
-      MoveFwdDeg(125, 50, 0 , true );
-      TurnLDeg(30, 80);
-      MoveFwdDeg(75, 10, 0 , true );
-      wait ( 2000, msec );
-      Index.spinFor(fwd, 180, deg, 150, rpm); wait( 1250, msec );
-      Index.spinFor(fwd, 180, deg, 150, rpm); wait( 1000, msec );
-      FlyW.stop();
+      MoveFwdDeg(50, -3, true);
+      Rolling( 20, 500, reverse );
+      MoveFwdDeg(30, 3, true);
+      TurnLDeg(30, 3.5);
+      Flying(85, false, 0);
+      wait (3500, msec);
+      Index.spinFor(fwd, 180, deg, 200, rpm ); wait(750,msec);
+      Index.spinFor(fwd, 180, deg, 200, rpm ); wait(500,msec);
+      Flying(0, false, 0);
     }
 
     else if ( AutoNum == 4) // Match Red Right
     {
-      Colour.setLightPower(25);
-      MoveFwdDeg ( 50, 0, 29, true);
-      MoveFwdDeg(75, -8, 0, true );
-      Rolling( 30, 500, reverse );
-      RollingCR(20);
-      MoveFwdDeg(75, 4, 0, true );
-      TurnLDeg(50, 45);
-      FlyW.spin(fwd, 67, pct);
-      MoveFwdDeg(125, 50, 0 , true );
-      TurnRDeg(30, 70);
-      wait ( 2000, msec );
-      Index.spinFor(fwd, 180, deg, 150, rpm); wait( 1250, msec );
-      Index.spinFor(fwd, 180, deg, 150, rpm); wait( 1000, msec );
-      FlyW.stop();
+      
     }
 
     else if ( AutoNum == 5 ) // Skills Left
@@ -376,7 +348,7 @@
 
     else if ( AutoNum == 7 ) // Test code
     {
-      // BLANK
+      Rolling(100, 2000, fwd);
     }
 
     else if ( AutoNum == 8 ) // NaN
@@ -407,9 +379,6 @@
   void PreAutonCall()
   {
     vexcodeInit();
-
-    // Only allows color dection from optical
-    Colour.gestureDisable();
 
     // Takes 3 seconds to calibrate inertial
     Gyro.calibrate();
