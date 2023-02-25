@@ -19,7 +19,7 @@ motor_group FlyW = motor_group (Fly0, Fly1);
 
 // Declare global objects for the intake roller and indexer motor
 motor IntRoll = motor ( PORT9, ratio6_1, false) ;
-motor Index = motor ( PORT6, ratio18_1, false );
+motor Index = motor ( PORT6, ratio18_1, true );
 
 // Declare global objects for the pneumatic solenoids
 digital_out expand0 = digital_out ( Cortex.ThreeWirePort.A ) ;
