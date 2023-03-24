@@ -30,7 +30,7 @@ digital_out expand1 = digital_out ( Cortex.ThreeWirePort.B ) ;
 inertial Gyro = inertial ( PORT8 );
 
 // Declare a global object for the optical sensor
-optical Colour = optical ( PORT14, false );
+optical Colour = optical ( PORT14 );
 
 /*
 // Declare global objects for the GPS and distance sensor (commented out)

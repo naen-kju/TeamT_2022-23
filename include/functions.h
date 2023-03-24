@@ -34,16 +34,36 @@
     {   return value; }
   }
 
-  // Code for PID
-  double PID(double TS, double CS, double kP, double kI, double kD )
-  {
-    double Error, Integral, Derivative, PrevError, Output;
-    Error = TS - CS;
-    Integral += Error;
-    Derivative = Error - PrevError;
-    Output = kP*Error + kI*Integral + kD*Derivative;
-    return Output;
-  }
+/*  FUNCTIONS FOR PID
+*/
+const double 
+kP = 1,
+kI = 0,
+kD = 0.0001;
+
+double Error, LastError, Intergal, Derivative;
+
+double PID(double tS, double cS)
+{     
+  Error = tS-cS;
+  LastError = Error;
+  Intergal = Intergal + Error;
+  Derivative = Error-LastError;
+  double Output= kP*Error + kI*Intergal + kD*Derivative;
+  return Output;
+}
+
+void FlyPID(double TargetSpeed)
+{
+  double CurrentSpeed= FlyW.voltage(volt);
+  double Output= PID (TargetSpeed, CurrentSpeed) + (TargetSpeed*0.01);
+  FlyW.spin( fwd, Output , volt) ;
+}
+
+void DriveFwdPID(double TargetSpeed )
+{
+  
+}
 
 /*  FUNCTIONS FOR USERCONTROL
 */
@@ -88,28 +108,15 @@
   }
 
   // Function to control flywheel in user control
-  int flySpeed = 0;
-  void FlySpinning()
+  int flySpeed;
+  void FlySpin()
   {
-    while (Con1.ButtonR2.pressing())
-    {
-      if (flySpeed == 0)
-      {
-        flySpeed = 65;
-      }
-      else
-      {
-        flySpeed += 5;
-      }
-      FlyW.spin(fwd, flySpeed, pct);
-      wait (150, msec);
-    }
-    while (Con1.ButtonR1.pressing())
-    {
-      flySpeed = 0;
-      FlyW.stop();
-      wait (150, msec);
-    }
+    FlyPID(10);
+  }
+
+  void FlyStop()
+  {
+    FlyW.stop();
   }
   
   // Function to control indexer in user control
@@ -212,22 +219,22 @@
   // Function to control intake roller in autonomous to roll to red
   void RollingCB( float vel )
   {
-    Rolling( 100, 500, reverse );
     Colour.setLightPower(25);
+    Rolling( 100, 500, reverse );
     wait (250, sec );
     IntRoll.spin(fwd, vel, pct);
-    waitUntil(Colour.color() == blue);
+    waitUntil(Colour.color() != red || orange || yellow);
     IntRoll.stop();
   }
 
   // Function to control intake roller in autonomous to roll to blue
   void RollingCR( float vel )
   {
-    Rolling( 100, 500, reverse );
     Colour.setLightPower(25);
+    Rolling( 100, 500, reverse );
     wait (250, sec );
     IntRoll.spin(fwd, vel, pct);
-    waitUntil(Colour.color() == red);
+    waitUntil(Colour.color() != blue || cyan || green || purple );
     IntRoll.stop();
   }
 
@@ -239,8 +246,8 @@
     Con1.ButtonB.pressed(Expansion);
     Con1.ButtonL2.pressed(IntRolling);
     Con1.ButtonL1.pressed(IntRolling);
-    Con1.ButtonR2.pressed(FlySpinning);
-    Con1.ButtonR1.pressed(FlySpinning);
+    Con1.ButtonR2.pressed(FlySpin);
+    Con1.ButtonR1.pressed(FlyStop);
     Con1.ButtonA.pressed(Indexer);
     Con1.ButtonB.pressed(Expansion);
   }
@@ -299,15 +306,21 @@
   // Function to call autonomous tasks
   void AutonCall()
   {
-    if ( AutoNum == 1 ) // Match Blue Left Button Up
+    SetTank(brake);
+    if ( AutoNum == 1 || AutoNum == 0) // Match Blue Left Button Up
     {
-      MoveFwdDeg(50, -3, true);
+      MoveFwdDeg(50, -1, true);
       Rolling( 20, 500, reverse );
       MoveFwdDeg(30, 3, true);
-      TurnLDeg(30, 3.5);
-      Flying(85, false, 0);
+      TurnRDeg(30, 45);
+      wait(400,msec);
+      MoveFwdDeg(50,24, true);
+      TurnLDeg(30,65);
+      wait(400,msec);
+      MoveFwdDeg(50,6,false);
+      Flying(71, false, 0);
       wait (3500, msec);
-      Index.spinFor(fwd, 180, deg, 200, rpm ); wait(750,msec);
+      Index.spinFor(fwd, 180, deg, 200, rpm ); wait(500,msec);
       Index.spinFor(fwd, 180, deg, 200, rpm ); wait(500,msec);
       Flying(0, false, 0);
     }
@@ -353,18 +366,23 @@
       Flying(0, false, 0);
     }
 
-    else if ( AutoNum == 5 || AutoNum == 0 ) // Skills Left
+    else if ( AutoNum == 5 ) // Skills Left
     {
-      MoveFwdDeg(50, -3, true);
-      Rolling( 20, 500, reverse );
+      MoveFwdDeg(50, -1, true);
+      Rolling( 100, 1000, reverse );
       MoveFwdDeg(30, 3, true);
-      TurnLDeg(30, 3.5);
-      Flying(85, false, 0);
+      TurnRDeg(30, 45);
+      wait(400,msec);
+      MoveFwdDeg(50,24, true);
+      TurnLDeg(30,65);
+      wait(400,msec);
+      MoveFwdDeg(50,6,false);
+      Flying(71, false, 0);
       wait (3500, msec);
-      Index.spinFor(fwd, 180, deg, 200, rpm ); wait(750,msec);
+      Index.spinFor(fwd, 180, deg, 200, rpm ); wait(500,msec);
       Index.spinFor(fwd, 180, deg, 200, rpm ); wait(500,msec);
       Flying(0, false, 0);
-      TurnLDeg(30, 45);
+      TurnLDeg(30, 100);
       expand0.set(true);
       expand1.set(true);
     }
@@ -376,7 +394,7 @@
 
     else if ( AutoNum == 7 ) // Test code
     {
-
+      FlyPID(600);
     }
 
     else if ( AutoNum == 8 ) // NaN
