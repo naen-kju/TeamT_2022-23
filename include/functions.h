@@ -8,10 +8,10 @@
   // Function to control overall drivetrain movement
   void TankSpin ( float Y, float R )
   {
-    LF.spin ( fwd, Y - R, pct );
-    LB.spin ( fwd, Y - R, pct );
-    RF.spin ( fwd, Y + R, pct );
-    RB.spin ( fwd, Y + R, pct );
+    LF.spin ( fwd, (Y - R) * .12, volt );
+    LB.spin ( fwd, (Y - R) * .12, volt );
+    RF.spin ( fwd, (Y + R) * .12, volt );
+    RB.spin ( fwd, (Y + R) * .12, volt );
   }
 
   // Function to set brake type for drivetrain motors
@@ -37,9 +37,9 @@
 /*  FUNCTIONS FOR PID
 */
 const double 
-kP = 1,
-kI = 0,
-kD = 0.0001;
+kP = 1.5,
+kI = 0.00,
+kD = 0.0008;
 
 double Error, LastError, Intergal, Derivative;
 
@@ -111,7 +111,7 @@ void DriveFwdPID(double TargetSpeed )
   int flySpeed;
   void FlySpin()
   {
-    FlyPID(10);
+    FlyPID(6.25);
   }
 
   void FlyStop()
@@ -125,7 +125,7 @@ void DriveFwdPID(double TargetSpeed )
     while (Con1.ButtonA.pressing())
     {
       Index.spinFor ( fwd, 180, deg, 150, rpm );
-      wait(300, msec);
+      wait(800, msec);
     }
   }
 
@@ -312,27 +312,22 @@ void DriveFwdPID(double TargetSpeed )
       MoveFwdDeg(50, -1, true);
       Rolling( 20, 500, reverse );
       MoveFwdDeg(30, 3, true);
-      TurnRDeg(30, 45);
-      wait(400,msec);
-      MoveFwdDeg(50,24, true);
-      TurnLDeg(30,65);
-      wait(400,msec);
-      MoveFwdDeg(50,6,false);
-      Flying(71, false, 0);
-      wait (3500, msec);
+      TurnLDeg(20*.12, 4);
+      FlyPID(6.6);
+      wait (4000, msec);
+      Index.spinFor(fwd, 180, deg, 200, rpm ); wait(1500,msec);
       Index.spinFor(fwd, 180, deg, 200, rpm ); wait(500,msec);
-      Index.spinFor(fwd, 180, deg, 200, rpm ); wait(500,msec);
-      Flying(0, false, 0);
+      FlyW.stop();
     }
 
     else if ( AutoNum == 2 ) // Match Blue Right Button Right
     {
       MoveFwdDeg(50, -18, true);
-      TurnRDeg(30, 90);
+      TurnRDeg(30*.12, 90);
       MoveFwdDeg(50, -5, true);
       Rolling( 20, 500, reverse );
       MoveFwdDeg(30, 3, true);
-      TurnRDeg(30, 1);
+      TurnRDeg(30*.12, 1);
       Flying(85, false, 0);
       wait (3500, msec);
       Index.spinFor(fwd, 180, deg, 200, rpm ); wait(1000,msec);
@@ -342,15 +337,15 @@ void DriveFwdPID(double TargetSpeed )
 
     else if ( AutoNum == 3 ) // Match Red Left Button Down
     {
-      MoveFwdDeg(50, -3, true);
+      MoveFwdDeg(50, -1, true);
       Rolling( 20, 500, reverse );
       MoveFwdDeg(30, 3, true);
-      TurnLDeg(30, 3.5);
-      Flying(85, false, 0);
-      wait (3500, msec);
-      Index.spinFor(fwd, 180, deg, 200, rpm ); wait(750,msec);
+      TurnLDeg(20*.12, 4);
+      FlyPID(6.6);
+      wait (4000, msec);
+      Index.spinFor(fwd, 180, deg, 200, rpm ); wait(1500,msec);
       Index.spinFor(fwd, 180, deg, 200, rpm ); wait(500,msec);
-      Flying(0, false, 0);
+      FlyW.stop();
     }
 
     else if ( AutoNum == 4) // Match Red Right
@@ -358,7 +353,7 @@ void DriveFwdPID(double TargetSpeed )
       MoveFwdDeg(50, -3, true);
       Rolling( 20, 500, reverse );
       MoveFwdDeg(30, 3, true);
-      TurnLDeg(30, 3.5);
+      TurnLDeg(30*.12, 3.5);
       Flying(85, false, 0);
       wait (3500, msec);
       Index.spinFor(fwd, 180, deg, 200, rpm ); wait(750,msec);
@@ -371,10 +366,10 @@ void DriveFwdPID(double TargetSpeed )
       MoveFwdDeg(50, -1, true);
       Rolling( 100, 1000, reverse );
       MoveFwdDeg(30, 3, true);
-      TurnRDeg(30, 45);
+      TurnRDeg(30*.12, 45);
       wait(400,msec);
       MoveFwdDeg(50,24, true);
-      TurnLDeg(30,65);
+      TurnLDeg(30*.12,65);
       wait(400,msec);
       MoveFwdDeg(50,6,false);
       Flying(71, false, 0);
@@ -382,7 +377,7 @@ void DriveFwdPID(double TargetSpeed )
       Index.spinFor(fwd, 180, deg, 200, rpm ); wait(500,msec);
       Index.spinFor(fwd, 180, deg, 200, rpm ); wait(500,msec);
       Flying(0, false, 0);
-      TurnLDeg(30, 100);
+      TurnLDeg(30*.12, 100);
       expand0.set(true);
       expand1.set(true);
     }
@@ -394,7 +389,18 @@ void DriveFwdPID(double TargetSpeed )
 
     else if ( AutoNum == 7 ) // Test code
     {
-      FlyPID(600);
+      MoveFwdDeg(50, 20, true);
+      FlyPID(6.65);
+      wait (4000, msec);
+      Index.spinFor(fwd, 180, deg, 200, rpm ); wait(1500,msec);
+      Index.spinFor(fwd, 180, deg, 200, rpm ); wait(500,msec);
+      FlyW.stop();
+      TurnLDeg(15*.12, 65);
+      MoveFwdDeg(50, -26, true);
+      TurnRDeg(15*.12, 43);
+      MoveFwdDeg(50, -1, true);
+      Rolling( 20, 500, reverse );
+      MoveFwdDeg(30, 3, true);
     }
 
     else if ( AutoNum == 8 ) // NaN
@@ -411,7 +417,7 @@ void DriveFwdPID(double TargetSpeed )
     {
       int 
       Y1Thres = Con1.Axis3.position ( pct ),
-      R1Thres = Con1.Axis1.position ( pct )/2.5;
+      R1Thres = Con1.Axis1.position ( pct )/2;
       TankSpin ( Y1Thres, R1Thres );
       wait ( 5, msec );
     }
